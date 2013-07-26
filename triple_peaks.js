@@ -68,6 +68,7 @@ var Game = (function (win) {
 
     var click_handler;
     var newRound = function () {
+        this.round++;
         $('.card').remove();
         this.deck = new Deck(Position);
         this.deck.shuffle();
@@ -273,7 +274,7 @@ var Game = (function (win) {
         this.score = 0;
         this.next_score = 10;
         this.next_peak = 500;
-        this.round = 1;
+        this.round = 0;
         this.streak = 0;
         this.$streak = $('<span>');
         this.$score = $('<span>');
