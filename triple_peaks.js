@@ -2,6 +2,15 @@
 
 /*global Deck, Card, $*/
 
+// scoring
+// starting at 10, each card in the streak doubles the last point value
+// so 10, 20, 40, 80, 160, etc..
+// last card in a peak is worth a bonus starting at 500 and increasing
+// each next peak by 250. the peak bonus goes down by 250 at the start
+// of a new round, so in round 1, 500, 750, 1000, in round 2, 750, 1000, 1250
+// at the end of a round get a bonus of 1000 for clearing
+// and a bonus of 100 per card still in the deck (counting up card)
+
 var Position = (function (win) {
     var Position = function (rank, suit) {
         Card.call(this, rank, suit);
@@ -10,6 +19,7 @@ var Position = (function (win) {
         this.div = null;
         this.x = 0;
         this.y = 0;
+        this.bonus = false;
     };
 
     Position.prototype.cover = function (position) {
@@ -53,55 +63,123 @@ var Position = (function (win) {
 
 var Game = (function (win) {
     var Game = function () {
+        return;
+    };
+
+    var click_handler;
+    var newRound = function () {
+        $('.card').remove();
         this.deck = new Deck(Position);
         this.deck.shuffle();
         this.positions = [];
         this.deck_div = null;
+        var x;
         var i;
-        var j;
-        var covered_index;
-        var x, y;
-        for (i = 0; i < 16; i++) {
+        for (i = 0; i < 28; i++) {
             this.positions.push(this.deck.drawOne());
         }
         // first row
-        this.positions[0].setDrawLocation(120, 0);
-        this.positions[1].setDrawLocation(280, 0);
-        this.positions[2].setDrawLocation(440, 0);
+        this.positions[0].setDrawLocation(120, 32);
+        this.positions[0].bonus = true;
+        this.positions[1].setDrawLocation(360, 32);
+        this.positions[1].bonus = true;
+        this.positions[2].setDrawLocation(600, 32);
+        this.positions[2].bonus = true;
 
-        // second row, first of third row
-        for (i = 3, j = 0; j < 7; i++, j++) {
-            covered_index = Math.floor(j / 2);
-            // set draw location based on what it covers
-            x = this.positions[covered_index].x - 40;
-            x += 80 * this.positions[covered_index].covered_by.length;
-            y = this.positions[covered_index].y + 64;
-            this.positions[i].setDrawLocation(x, y);
+        // second row
+        x = 80;
+        this.positions[3].setDrawLocation(x, 96);
+        this.positions[3].cover(this.positions[0]);
+        this.positions[4].setDrawLocation(x + 80, 96);
+        this.positions[4].cover(this.positions[0]);
 
-            this.positions[i].cover(this.positions[covered_index]);
-        }
+        x = 320;
+        this.positions[5].setDrawLocation(x, 96);
+        this.positions[5].cover(this.positions[1]);
+        this.positions[6].setDrawLocation(x + 80, 96);
+        this.positions[6].cover(this.positions[1]);
 
-        // rest of the third row
-        for (j = 0; j < 6; i++, j++) {
-            covered_index = 3 + j;
-            // set draw location based on what it covers
-            x = this.positions[covered_index].x - 40;
-            x += 80 * this.positions[covered_index].covered_by.length;
-            y = this.positions[covered_index].y + 64;
-            this.positions[i].setDrawLocation(x, y);
+        x = 560;
+        this.positions[7].setDrawLocation(x, 96);
+        this.positions[7].cover(this.positions[2]);
+        this.positions[8].setDrawLocation(x + 80, 96);
+        this.positions[8].cover(this.positions[2]);
 
-            this.positions[i].cover(this.positions[covered_index]);
-            if (i !== 15) {
-                this.positions[i].cover(this.positions[covered_index + 1]);
-            }
-        }
+        // third row
+        x = 40;
+        this.positions[9].setDrawLocation(x, 160);
+        this.positions[9].cover(this.positions[3]);
+        this.positions[10].setDrawLocation(x + 80, 160);
+        this.positions[10].cover(this.positions[3]);
+        this.positions[10].cover(this.positions[4]);
+        this.positions[11].setDrawLocation(x + 160, 160);
+        this.positions[11].cover(this.positions[4]);
 
-        win.console.log('positions:', this.positions);
+        this.positions[12].setDrawLocation(x + 240, 160);
+        this.positions[12].cover(this.positions[5]);
+        this.positions[13].setDrawLocation(x + 320, 160);
+        this.positions[13].cover(this.positions[5]);
+        this.positions[13].cover(this.positions[6]);
+        this.positions[14].setDrawLocation(x + 400, 160);
+        this.positions[14].cover(this.positions[6]);
+
+        this.positions[15].setDrawLocation(x + 480, 160);
+        this.positions[15].cover(this.positions[7]);
+        this.positions[16].setDrawLocation(x + 560, 160);
+        this.positions[16].cover(this.positions[7]);
+        this.positions[16].cover(this.positions[8]);
+        this.positions[17].setDrawLocation(x + 640, 160);
+        this.positions[17].cover(this.positions[8]);
+
+        // fourth row
+        this.positions[18].setDrawLocation(0, 224);
+        this.positions[18].cover(this.positions[9]);
+
+        this.positions[19].setDrawLocation(80, 224);
+        this.positions[19].cover(this.positions[9]);
+        this.positions[19].cover(this.positions[10]);
+
+        this.positions[20].setDrawLocation(160, 224);
+        this.positions[20].cover(this.positions[10]);
+        this.positions[20].cover(this.positions[11]);
+
+        this.positions[21].setDrawLocation(240, 224);
+        this.positions[21].cover(this.positions[11]);
+        this.positions[21].cover(this.positions[12]);
+
+        this.positions[22].setDrawLocation(320, 224);
+        this.positions[22].cover(this.positions[12]);
+        this.positions[22].cover(this.positions[13]);
+
+        this.positions[23].setDrawLocation(400, 224);
+        this.positions[23].cover(this.positions[13]);
+        this.positions[23].cover(this.positions[14]);
+
+        this.positions[24].setDrawLocation(480, 224);
+        this.positions[24].cover(this.positions[14]);
+        this.positions[24].cover(this.positions[15]);
+
+        this.positions[25].setDrawLocation(560, 224);
+        this.positions[25].cover(this.positions[15]);
+        this.positions[25].cover(this.positions[16]);
+
+        this.positions[26].setDrawLocation(640, 224);
+        this.positions[26].cover(this.positions[16]);
+        this.positions[26].cover(this.positions[17]);
+
+        this.positions[27].setDrawLocation(720, 224);
+        this.positions[27].cover(this.positions[17]);
+
         this.up_card = this.deck.drawOne();
-        this.up_card.setDrawLocation(this.positions[15].x - 80 * 1.5, this.positions[15].y + 128 * 1.25);
+        this.up_card.setDrawLocation(this.positions[27].x - 80 * 1.5, this.positions[27].y + 128 * 1.25);
+        this.draw();
+        $('.card').click(click_handler.bind(this));
     };
 
     Game.prototype.draw = function () {
+        this.$streak.text(this.streak);
+        this.$score.text(this.score);
+        this.$round.text(this.round);
         this.positions.forEach(function (position) {
             position.draw();
         });
@@ -130,10 +208,15 @@ var Game = (function (win) {
 
     Game.prototype.update = function () {
         this.draw();
+        win.console.log('Score:', this.score);
         if (this.positions.length === 0) {
-            win.console.log('\n\n\nGAME WON\n\n\n');
-            return;
+            this.next_peak -= 250;
+            this.score += 1000; // round bonus
+            this.score += 100 * (this.deck.length() + 1);
+            newRound.call(this);
+            return this.update();
         }
+
         if (this.deck.length() === 0) {
             // check for game over
             var not_over = this.positions.some(function (position) {
@@ -145,10 +228,12 @@ var Game = (function (win) {
         }
     };
 
-    var click_handler = function (event) {
+    click_handler = function (event) {
         var position_index = -1;
         var new_up_card;
         if (event.target === this.deck_div) {
+            this.streak = 0;
+            this.next_score = 10;
             this.replaceUpCard(this.deck.drawOne());
             this.update();
             return false;
@@ -165,6 +250,13 @@ var Game = (function (win) {
             return false;
         }
         if (canChoose(this.up_card, this.positions[position_index])) {
+            this.score += this.next_score;
+            this.next_score *= 2;
+            this.streak++;
+            if (this.positions[position_index].bonus) {
+                this.score += this.next_peak;
+                this.next_peak += 250;
+            }
             this.positions[position_index].remove();
             new_up_card = this.positions.splice(position_index, 1);
             this.replaceUpCard(new_up_card[0]);
@@ -177,8 +269,28 @@ var Game = (function (win) {
         if (this.started) {
             return;
         }
+        this.started = true;
+        this.score = 0;
+        this.next_score = 10;
+        this.next_peak = 500;
+        this.round = 1;
+        this.streak = 0;
+        this.$streak = $('<span>');
+        this.$score = $('<span>');
+        this.$round = $('<span>');
+        $('body')
+            .append($('<div>')
+                    .addClass('streak')
+                    .append(this.$streak))
+            .append($('<div>')
+                    .addClass('score')
+                    .append(this.$score))
+            .append($('<div>')
+                    .addClass('round')
+                    .append(this.$round));
+
+        newRound.call(this);
         this.update();
-        $('.card').click(click_handler.bind(this));
     };
 
     return Game;

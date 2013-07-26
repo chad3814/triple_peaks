@@ -1,0 +1,42 @@
+.streak {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 24px;
+    padding: 2px;
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.streak span:before {
+    content: 'Streak: '
+}
+
+.score {
+    position: absolute;
+    top: 0px;
+    left: 360px;
+    height: 24px;
+    padding: 2px;
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.score span:before {
+    content: 'Score: '
+}
+
+.round {
+    position: absolute;
+    top: 0px;
+    left: 760px;
+    height: 24px;
+    padding: 2px;
+    border: 1px solid black;
+    border-radius: 6px;
+}
+
+.round span:before {
+    content: 'Round: '
+}
+
