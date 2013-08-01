@@ -232,7 +232,7 @@ var Game = (function (win) {
     click_handler = function (event) {
         var position_index = -1;
         var new_up_card;
-        if (event.target === this.deck_div) {
+        if (event.currentTarget === this.deck_div) {
             this.streak = 0;
             this.next_score = 10;
             this.replaceUpCard(this.deck.drawOne());
@@ -240,7 +240,7 @@ var Game = (function (win) {
             return false;
         }
         this.positions.forEach(function (position, index) {
-            if (position.div === event.target) {
+            if (position.div === event.currentTarget) {
                 position_index = index;
             }
         });
