@@ -22,6 +22,8 @@ var Position = (function (win) {
         this.bonus = false;
     };
 
+    Position.prototype = new Card();
+
     Position.prototype.cover = function (position) {
         position.covered_by.push(this);
         this.covering.push(position);
@@ -33,6 +35,9 @@ var Position = (function (win) {
             covered.covered_by = covered.covered_by.filter(function (position) {
                 return position !== coverer;
             });
+            if (covered.covered_by.length === 0) {
+                covered.flip = true;
+            }
         });
         this.covering = [];
     };
@@ -50,7 +55,12 @@ var Position = (function (win) {
         if (this.isCovered()) {
             this.div = Card.drawBack.call(this, this.x, this.y, this.div);
         } else {
-            this.div = Card.prototype.draw.call(this, this.x, this.y, this.div);
+            if (this.flip) {
+                this.backToFront(this.div);
+                this.flip = false;
+            } else {
+                this.div = Card.prototype.draw.call(this, this.x, this.y, this.div);
+            }
         }
     };
 
