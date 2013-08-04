@@ -235,6 +235,13 @@ var Game = (function (win) {
             }, this);
             if (!not_over) {
                 win.console.log('\n\n\nGAME OVER\n\n\n');
+                var $game_over = $('<div>').addClass('game_over').text('Game Over');
+                $('body').append($game_over);
+                this.started = false;
+                $game_over.click(function () {
+                    $game_over.remove();
+                    this.start();
+                }.bind(this));
             }
         }
     };

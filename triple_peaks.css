@@ -40,3 +40,16 @@
     content: 'Round: '
 }
 
+.game_over {
+    position: absolute;
+    top: 175px;
+    left: 360px;
+    padding: 8px;
+    line-height: 64px;
+    font-size: 58px;
+    border: 1px solid black;
+    border-radius: 6px;
+    z-index: 10;
+    background-color: white;
+    cursor: default;
+}
