@@ -1,13 +1,29 @@
 body {
+    padding: 0;
+    margin: 0;
+}
+
+.container {
     background: no-repeat url(Three_Sisters.jpg);
+    width: 825px;
+    height: 500px;
+    padding: 0;
+    margin: 0;
+}
+
+.hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 825px;
+    text-align: center;
 }
 
 .streak {
-    position: absolute;
-    top: 0px;
-    left: 0px;
+    float: left;
     max-height: 24px;
     padding: 2px;
+    margin: 2px;
     border: 1px solid black;
     border-radius: 6px;
 }
@@ -17,11 +33,10 @@ body {
 }
 
 .score {
-    position: absolute;
-    top: 0px;
-    left: 360px;
+    display: inline-block;
     max-height: 24px;
     padding: 2px;
+    margin: 2px;
     border: 1px solid black;
     border-radius: 6px;
 }
@@ -31,11 +46,10 @@ body {
 }
 
 .round {
-    position: absolute;
-    top: 0px;
-    left: 760px;
+    float: right;
     max-height: 24px;
     padding: 2px;
+    margin: 2px;
     border: 1px solid black;
     border-radius: 6px;
 }
@@ -46,8 +60,6 @@ body {
 
 .game_over {
     position: absolute;
-    top: 175px;
-    left: 360px;
     padding: 8px;
     line-height: 64px;
     font-size: 58px;
