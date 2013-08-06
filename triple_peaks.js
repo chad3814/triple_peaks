@@ -36,15 +36,12 @@ var Position = (function (win) {
     };
 
     Position.prototype.remove = function () {
-        console.log('removing', this.toString());
         var coverer = this;
         this.covering.forEach(function (covered) {
-            console.log('it covered', covered.toString());
             covered.covered_by = covered.covered_by.filter(function (position) {
                 return position !== coverer;
             });
             if (covered.covered_by.length === 0) {
-                console.log('covered is now not covered by anything');
                 covered.backToFront(covered.div);
             }
         }, this);
@@ -62,9 +59,9 @@ var Position = (function (win) {
 
     Position.prototype.draw = function () {
         if (this.isCovered()) {
-            this.div = Card.drawBack.call(this, this.x, this.y, this.div);
+            this.div = Card.drawBack.call(this, this.x + 8, this.y + 2, this.div);//, $('.container')[0]);
         } else {
-            this.div = Card.prototype.draw.call(this, this.x, this.y, this.div);
+            this.div = Card.prototype.draw.call(this, this.x + 8, this.y + 2, this.div);//, $('.container')[0]);
         }
     };
 
@@ -200,6 +197,7 @@ var Game = (function (win) {
 
         this.draw();
         $('.card').click(click_handler.bind(this));
+        $('.container').css('-webkit-filter', 'grayscale(1.0) blur(5.6px)');
     };
 
     Game.prototype.draw = function () {
@@ -224,12 +222,10 @@ var Game = (function (win) {
         var current_div = this.up_card.div;
         this.up_card = new_up_card;
         var dist = distance(new_up_card, this.up_card_position);
-        console.log('animating for', dist / this.speed);
         $(new_up_card.div).animate({
             top: this.up_card_position.y + 'px',
             left: this.up_card_position.x + 'px'
         }, dist / this.speed * 1000, function () {
-            console.log('animation done');
             $(current_div).remove();
         });
     };
@@ -243,7 +239,6 @@ var Game = (function (win) {
 
     Game.prototype.update = function () {
         this.draw();
-        win.console.log('Score:', this.score);
         if (this.positions.length === 0) {
             this.next_peak -= 250;
             this.score += 1000; // round bonus
@@ -259,8 +254,15 @@ var Game = (function (win) {
             }, this);
             if (!not_over) {
                 win.console.log('\n\n\nGAME OVER\n\n\n');
-                var $game_over = $('<div>').addClass('game_over').text('Game Over');
-                $('body').append($game_over);
+                var $game_over = $('<div>').addClass('game_over').text('Game Over').css('visibility', 'hidden');
+                $('.container').append($game_over);
+                var width = $game_over.width();
+                var height = $game_over.height();
+                $game_over.css({
+                    top: (500 - height) / 2,
+                    left: (825 - width) / 2,
+                    visibility: 'visible'
+                });
                 this.started = false;
                 $game_over.click(function () {
                     $game_over.remove();
@@ -280,7 +282,6 @@ var Game = (function (win) {
             new_up_card = this.deck.drawOne();
             pos = $(this.deck_div).position();
             new_up_card.setDrawLocation(pos.left, pos.top);
-            console.log('draw on deck', new_up_card);
             new_up_card.draw();
             this.replaceUpCard(new_up_card);
             this.update();
@@ -305,10 +306,10 @@ var Game = (function (win) {
                 this.score += this.next_peak;
                 this.next_peak += 250;
             }
-            console.log('card clicked, removing', this.positions[position_index].toString());
             this.positions[position_index].remove();
             new_up_card = this.positions.splice(position_index, 1);
             this.replaceUpCard(new_up_card[0]);
+            $('.container').css('-webkit-filter', 'grayscale(' + (this.positions.length / 28) + ') blur(' + (this.positions.length * 0.2) + 'px)');
             this.update();
             return false;
         }
@@ -330,7 +331,7 @@ var Game = (function (win) {
         $('.streak').remove();
         $('.score').remove();
         $('.round').remove();
-        $('body')
+        $('.hud')
             .append($('<div>')
                     .addClass('streak')
                     .append(this.$streak))
