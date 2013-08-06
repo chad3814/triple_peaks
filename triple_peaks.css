@@ -1,8 +1,12 @@
+body {
+    background: no-repeat url(Three_Sisters.jpg);
+}
+
 .streak {
     position: absolute;
     top: 0px;
     left: 0px;
-    height: 24px;
+    max-height: 24px;
     padding: 2px;
     border: 1px solid black;
     border-radius: 6px;
@@ -16,7 +20,7 @@
     position: absolute;
     top: 0px;
     left: 360px;
-    height: 24px;
+    max-height: 24px;
     padding: 2px;
     border: 1px solid black;
     border-radius: 6px;
@@ -30,7 +34,7 @@
     position: absolute;
     top: 0px;
     left: 760px;
-    height: 24px;
+    max-height: 24px;
     padding: 2px;
     border: 1px solid black;
     border-radius: 6px;
