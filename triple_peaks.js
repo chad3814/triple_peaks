@@ -204,7 +204,7 @@ var Game = (function (win) {
 
     Game.prototype.draw = function () {
         this.$streak.text(this.streak);
-        this.$score.text(this.score);
+        this.$score.text(this.score.toLocaleString());
         this.$round.text(this.round);
         this.positions.forEach(function (position) {
             if (!position.div) {
