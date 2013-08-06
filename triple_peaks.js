@@ -11,6 +11,12 @@
 // at the end of a round get a bonus of 1000 for clearing
 // and a bonus of 100 per card still in the deck (counting up card)
 
+var distance = function (pos1, pos2) {
+    var x2 = (pos1.x - pos2.x) * (pos1.x - pos2.x);
+    var y2 = (pos1.y - pos2.y) * (pos1.y - pos2.y);
+    return Math.sqrt(x2 + y2);
+};
+
 var Position = (function (win) {
     var Position = function (rank, suit) {
         Card.call(this, rank, suit);
@@ -30,15 +36,18 @@ var Position = (function (win) {
     };
 
     Position.prototype.remove = function () {
+        console.log('removing', this.toString());
         var coverer = this;
         this.covering.forEach(function (covered) {
+            console.log('it covered', covered.toString());
             covered.covered_by = covered.covered_by.filter(function (position) {
                 return position !== coverer;
             });
             if (covered.covered_by.length === 0) {
-                covered.flip = true;
+                console.log('covered is now not covered by anything');
+                covered.backToFront(covered.div);
             }
-        });
+        }, this);
         this.covering = [];
     };
 
@@ -55,12 +64,7 @@ var Position = (function (win) {
         if (this.isCovered()) {
             this.div = Card.drawBack.call(this, this.x, this.y, this.div);
         } else {
-            if (this.flip) {
-                this.backToFront(this.div);
-                this.flip = false;
-            } else {
-                this.div = Card.prototype.draw.call(this, this.x, this.y, this.div);
-            }
+            this.div = Card.prototype.draw.call(this, this.x, this.y, this.div);
         }
     };
 
@@ -182,7 +186,18 @@ var Game = (function (win) {
         this.positions[27].cover(this.positions[17]);
 
         this.up_card = this.deck.drawOne();
-        this.up_card.setDrawLocation(this.positions[27].x - 80 * 1.5, this.positions[27].y + 128 * 1.25);
+        if (!this.up_card_position) {
+            this.up_card_position = {
+                x: this.positions[27].x - 80 * 1.5,
+                y: this.positions[27].y + 128 * 1.25
+            };
+        }
+        this.up_card.setDrawLocation(this.up_card_position.x, this.up_card_position.y);
+
+        if (!this.speed) {
+            this.speed = distance(this.up_card, this.positions[0]) / 0.5;
+        }
+
         this.draw();
         $('.card').click(click_handler.bind(this));
     };
@@ -192,11 +207,13 @@ var Game = (function (win) {
         this.$score.text(this.score);
         this.$round.text(this.round);
         this.positions.forEach(function (position) {
-            position.draw();
+            if (!position.div) {
+                position.draw();
+            }
         });
         this.up_card.draw();
         if (this.deck.length()) {
-            this.deck_div = this.deck.draw(this.up_card.x - 80 * 2, this.up_card.y, this.deck_div);
+            this.deck_div = this.deck.draw(this.up_card_position.x - 80 * 2, this.up_card_position.y, this.deck_div);
         } else if (this.deck_div) {
             $(this.deck_div).remove();
             this.deck_div = null;
@@ -204,10 +221,17 @@ var Game = (function (win) {
     };
 
     Game.prototype.replaceUpCard = function (new_up_card) {
-        new_up_card.x = this.up_card.x;
-        new_up_card.y = this.up_card.y;
-        $(this.up_card.div).remove();
+        var current_div = this.up_card.div;
         this.up_card = new_up_card;
+        var dist = distance(new_up_card, this.up_card_position);
+        console.log('animating for', dist / this.speed);
+        $(new_up_card.div).animate({
+            top: this.up_card_position.y + 'px',
+            left: this.up_card_position.x + 'px'
+        }, dist / this.speed * 1000, function () {
+            console.log('animation done');
+            $(current_div).remove();
+        });
     };
 
     var canChoose = function (card1, card2) {
@@ -249,10 +273,16 @@ var Game = (function (win) {
     click_handler = function (event) {
         var position_index = -1;
         var new_up_card;
+        var pos;
         if (event.currentTarget === this.deck_div) {
             this.streak = 0;
             this.next_score = 10;
-            this.replaceUpCard(this.deck.drawOne());
+            new_up_card = this.deck.drawOne();
+            pos = $(this.deck_div).position();
+            new_up_card.setDrawLocation(pos.left, pos.top);
+            console.log('draw on deck', new_up_card);
+            new_up_card.draw();
+            this.replaceUpCard(new_up_card);
             this.update();
             return false;
         }
@@ -275,6 +305,7 @@ var Game = (function (win) {
                 this.score += this.next_peak;
                 this.next_peak += 250;
             }
+            console.log('card clicked, removing', this.positions[position_index].toString());
             this.positions[position_index].remove();
             new_up_card = this.positions.splice(position_index, 1);
             this.replaceUpCard(new_up_card[0]);
