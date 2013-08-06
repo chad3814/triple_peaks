@@ -296,6 +296,9 @@ var Game = (function (win) {
         this.$streak = $('<span>');
         this.$score = $('<span>');
         this.$round = $('<span>');
+        $('.streak').remove();
+        $('.score').remove();
+        $('.round').remove();
         $('body')
             .append($('<div>')
                     .addClass('streak')
