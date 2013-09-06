@@ -44,16 +44,39 @@ body {
     content: 'Round: '
 }
 
-.game_over {
+.message_container {
     position: absolute;
-    top: 175px;
-    left: 360px;
+    display: table;
+    top: 0px;
+    left: 0px;
+    width: 825px;
+    height: 500px;
+    z-index: 10;
+}
+
+.message_container > div {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.game_over {
+    display: inline-block;
     padding: 8px;
     line-height: 64px;
     font-size: 58px;
     border: 1px solid black;
     border-radius: 6px;
-    z-index: 10;
     background-color: white;
     cursor: default;
+}
+
+.instructions {
+    display: inline-block;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 6px;
+    background-color: white;
+    cursor: default;
+    text-align: left;
 }

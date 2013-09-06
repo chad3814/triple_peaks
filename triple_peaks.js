@@ -241,6 +241,16 @@ var Game = (function (win) {
             (card1.rank === (card2.rank - 1));
     };
 
+    Game.prototype.showMessage = function ($message) {
+        var $message_container = $('<div>')
+            .addClass('message_container')
+            .append($('<div>')
+                    .append($message));
+
+        $('body').append($message_container);
+        return $message_container;
+    };
+
     Game.prototype.update = function () {
         this.draw();
         win.console.log('Score:', this.score);
@@ -259,12 +269,14 @@ var Game = (function (win) {
             }, this);
             if (!not_over) {
                 win.console.log('\n\n\nGAME OVER\n\n\n');
-                var $game_over = $('<div>').addClass('game_over').text('Game Over');
-                $('body').append($game_over);
+                var $game_over = $('<div>')
+                    .addClass('game_over')
+                    .text('Game Over');
+                var $message = this.showMessage($game_over);
                 this.started = false;
                 $game_over.click(function () {
-                    $game_over.remove();
-                    this.start();
+                    $message.remove();
+                    this.start(true);
                 }.bind(this));
             }
         }
@@ -314,7 +326,7 @@ var Game = (function (win) {
         }
     };
 
-    Game.prototype.start = function () {
+    Game.prototype.start = function (no_instructions) {
         if (this.started) {
             return;
         }
@@ -342,7 +354,20 @@ var Game = (function (win) {
                     .append(this.$round));
 
         newRound.call(this);
-        this.update();
+        if (no_instructions) {
+            return this.update();
+        }
+        var $instructions = $('<div>')
+            .addClass('instructions')
+            .append($('<h3>').text('Instructions'))
+            .append($('<ul>')
+                    .append($('<li>').text('Click a card'))
+                    .append($('<li>').text('Then click another')));
+        var $message = this.showMessage($instructions);
+        $instructions.click(function (event) {
+            $message.remove();
+            this.update();
+        });
     };
 
     return Game;
