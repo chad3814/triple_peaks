@@ -224,7 +224,7 @@ var Game = (function (win) {
         var current_div = this.up_card.div;
         this.up_card = new_up_card;
         var dist = distance(new_up_card, this.up_card_position);
-        console.log('animating for', dist / this.speed);
+
         $(new_up_card.div).animate({
             top: this.up_card_position.y + 'px',
             left: this.up_card_position.x + 'px'
@@ -249,6 +249,52 @@ var Game = (function (win) {
 
         $('body').append($message_container);
         return $message_container;
+    };
+
+    Game.prototype.showScore = function (points, position) {
+        var $score_bubble = $('<div>')
+            .addClass('score_bubble')
+            .text(points.toLocaleString())
+            .css({
+                top: (position.y + 32) + 'px',
+                left: (position.x + 8) + 'px'
+            })
+            .appendTo($('body'));
+
+        var top = this.$score.parent().position().top;
+        var left = this.$score.parent().position().left + (this.$score.parent().width() / 2);
+        var dist = distance({x: position.x + 8, y: position.y + 32}, {x: left, y: top}) * 2.5;
+        $score_bubble.animate({
+            top: top + 'px',
+            left: left + 'px'
+        }, dist / this.speed * 1000, function () {
+            $score_bubble.remove();
+        });
+
+        return $score_bubble;
+    };
+
+    Game.prototype.showBonusScore = function (points, position) {
+        var $score_bubble = $('<div>')
+            .addClass('score_bubble bonus_bubble')
+            .text(points.toLocaleString())
+            .css({
+                top: (position.y + 80) + 'px',
+                left: (position.x + 8) + 'px'
+            })
+            .appendTo($('body'));
+
+        var top = this.$score.parent().position().top;
+        var left = this.$score.parent().position().left + (this.$score.parent().width() / 2);
+        var dist = distance({x: position.x + 8, y: position.y + 80}, {x: left, y: top}) * 2.5;
+        $score_bubble.animate({
+            top: top + 'px',
+            left: left + 'px'
+        }, dist / this.speed * 1000, function () {
+            $score_bubble.remove();
+        });
+
+        return $score_bubble;
     };
 
     Game.prototype.update = function () {
@@ -281,7 +327,7 @@ var Game = (function (win) {
             $round_end.click(function (event) {
                 $message.remove();
                 this.update();
-            });
+            }.bind(this));
         }
 
         if (this.deck.length() === 0) {
@@ -332,10 +378,12 @@ var Game = (function (win) {
             return false;
         }
         if (canChoose(this.up_card, this.positions[position_index])) {
+            this.showScore(this.next_score, this.positions[position_index]);
             this.score += this.next_score;
             this.next_score *= 2;
             this.streak++;
             if (this.positions[position_index].bonus) {
+                this.showBonusScore(this.next_peak, this.positions[position_index]);
                 this.score += this.next_peak;
                 this.next_peak += 250;
             }
@@ -394,7 +442,7 @@ var Game = (function (win) {
         $instructions.click(function (event) {
             $message.remove();
             this.update();
-        });
+        }.bind(this));
     };
 
     return Game;
