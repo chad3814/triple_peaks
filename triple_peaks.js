@@ -1,6 +1,6 @@
 'use strict';
 
-/*global Deck, Card, $*/
+/*global Deck, Card, $, Image*/
 
 // scoring
 // starting at 10, each card in the streak doubles the last point value
@@ -419,6 +419,18 @@ var Game = (function (win) {
         if (no_instructions) {
             return this.update();
         }
+
+        // loop to try to load all svg's before they are used
+        Card.ranks.forEach(function (rank) {
+            if (rank === 'G') {
+                // no jokes
+                return;
+            }
+            Card.suits.forEach(function (suit) {
+                new Image().src = 'svg/' + rank + suit + '.svg';
+            });
+        });
+
         var $instructions = $('<div>')
             .addClass('message')
             .append($('<h3>').text('How To Play'))
