@@ -36,15 +36,12 @@ var Position = (function (win) {
     };
 
     Position.prototype.remove = function () {
-        console.log('removing', this.toString());
         var coverer = this;
         this.covering.forEach(function (covered) {
-            console.log('it covered', covered.toString());
             covered.covered_by = covered.covered_by.filter(function (position) {
                 return position !== coverer;
             });
             if (covered.covered_by.length === 0) {
-                console.log('covered is now not covered by anything');
                 covered.backToFront(covered.div);
             }
         }, this);
@@ -229,7 +226,6 @@ var Game = (function (win) {
             top: this.up_card_position.y + 'px',
             left: this.up_card_position.x + 'px'
         }, dist / this.speed * 1000, function () {
-            console.log('animation done');
             $(current_div).remove();
         });
     };
@@ -300,7 +296,6 @@ var Game = (function (win) {
     Game.prototype.update = function () {
         var $message;           // forward declaration
         this.draw();
-        win.console.log('Score:', this.score);
         if (this.positions.length === 0) {
             this.next_peak -= 250;
             var deck_bonus = 100 * (this.deck.length() + 1);
@@ -336,7 +331,6 @@ var Game = (function (win) {
                 return !position.isCovered() && canChoose(this.up_card, position);
             }, this);
             if (!not_over) {
-                win.console.log('\n\n\nGAME OVER\n\n\n');
                 var $game_over = $('<div>')
                     .addClass('game_over')
                     .text('Game Over');
@@ -360,7 +354,6 @@ var Game = (function (win) {
             new_up_card = this.deck.drawOne();
             pos = $(this.deck_div).position();
             new_up_card.setDrawLocation(pos.left, pos.top);
-            console.log('draw on deck', new_up_card);
             new_up_card.draw();
             this.replaceUpCard(new_up_card);
             this.update();
@@ -387,7 +380,6 @@ var Game = (function (win) {
                 this.score += this.next_peak;
                 this.next_peak += 250;
             }
-            console.log('card clicked, removing', this.positions[position_index].toString());
             this.positions[position_index].remove();
             new_up_card = this.positions.splice(position_index, 1);
             this.replaceUpCard(new_up_card[0]);
