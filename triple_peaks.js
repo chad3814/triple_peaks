@@ -359,10 +359,15 @@ var Game = (function (win) {
         }
         var $instructions = $('<div>')
             .addClass('instructions')
-            .append($('<h3>').text('Instructions'))
+            .append($('<h3>').text('How To Play'))
             .append($('<ul>')
-                    .append($('<li>').text('Click a card'))
-                    .append($('<li>').text('Then click another')));
+                    .append($('<li>').text('Choose a card one higher or one lower then the up card'))
+                    .append($('<li>').text('Aces are both high and low'))
+                    .append($('<li>').text('If there are no matches for the up card, click on the deck'))
+                    .append($('<li>').text('Try to create long runs of matches'))
+                    .append($('<li>').text('The game ends when there are no more matches and the deck is empty'))
+                    .append($('<li>').text('If you clear all the cards, you\'ll continue in another round')));
+
         var $message = this.showMessage($instructions);
         $instructions.click(function (event) {
             $message.remove();
