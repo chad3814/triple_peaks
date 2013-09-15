@@ -1,1 +1,24 @@
-../cardsjs/cards.css
+.card {
+    width: 80px;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card.flipToEdge {
+    -webkit-transition:all 0.25s ease-in-out;
+    -webkit-perspective: 800px;
+    -webkit-perspective-origin: 50% 100px;
+    -webkit-transform: rotateY(90deg);
+    z-index: 10;
+}
+
+.card.flipFromEdge {
+    -webkit-transition:all 0.25s ease-in-out;
+    -webkit-perspective: 800px;
+    -webkit-perspective-origin: 50% 100px;
+    -webkit-transform: rotateY(0deg);
+    z-index: 10;
+}
