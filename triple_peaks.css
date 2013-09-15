@@ -71,7 +71,7 @@ body {
     cursor: default;
 }
 
-.instructions {
+.message {
     display: inline-block;
     padding: 8px;
     border: 1px solid black;
@@ -79,4 +79,12 @@ body {
     background-color: white;
     cursor: default;
     text-align: left;
+    min-width: 160px;
+    max-width: 384px;
+}
+
+.round_score {
+    min-width: 64px;
+    float: right;
+    text-align: right;
 }

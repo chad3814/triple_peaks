@@ -252,14 +252,36 @@ var Game = (function (win) {
     };
 
     Game.prototype.update = function () {
+        var $message;           // forward declaration
         this.draw();
         win.console.log('Score:', this.score);
         if (this.positions.length === 0) {
             this.next_peak -= 250;
-            this.score += 1000; // round bonus
-            this.score += 100 * (this.deck.length() + 1);
+            var deck_bonus = 100 * (this.deck.length() + 1);
+            var round_bonus = 1000;
+            var $round_end = $('<div>').addClass('message')
+                .append($('<h3>').text('End of Round'))
+                .append($('<div>')
+                        .append($('<span>').addClass('round_score').text(this.score.toLocaleString()))
+                        .append($('<span>').text('Base Score')))
+                .append($('<div>')
+                        .append($('<span>').addClass('round_score').text(round_bonus.toLocaleString()))
+                        .append($('<span>').text('Round Bonus')))
+                .append($('<div>')
+                        .append($('<span>').addClass('round_score').text(deck_bonus.toLocaleString()))
+                        .append($('<span>').text('Deck Bonus')))
+                .append($('<hr>'))
+                .append($('<div>')
+                        .append($('<span>').addClass('round_score').text((this.score + round_bonus + deck_bonus).toLocaleString()))
+                        .append($('<span>').text('Total')));
+            this.score += round_bonus;
+            this.score += deck_bonus;
             newRound.call(this);
-            return this.update();
+            $message = this.showMessage($round_end);
+            $round_end.click(function (event) {
+                $message.remove();
+                this.update();
+            });
         }
 
         if (this.deck.length() === 0) {
@@ -272,7 +294,7 @@ var Game = (function (win) {
                 var $game_over = $('<div>')
                     .addClass('game_over')
                     .text('Game Over');
-                var $message = this.showMessage($game_over);
+                $message = this.showMessage($game_over);
                 this.started = false;
                 $game_over.click(function () {
                     $message.remove();
@@ -358,7 +380,7 @@ var Game = (function (win) {
             return this.update();
         }
         var $instructions = $('<div>')
-            .addClass('instructions')
+            .addClass('message')
             .append($('<h3>').text('How To Play'))
             .append($('<ul>')
                     .append($('<li>').text('Choose a card one higher or one lower then the up card'))
