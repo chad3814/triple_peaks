@@ -104,3 +104,61 @@ body {
 .bonus_bubble {
     background-color: rgba(192, 192, 0, 0.75);
 }
+
+.high_streak {
+    position: absolute;
+    top: 502px;
+    left: 0px;
+    max-height: 24px;
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 6px;
+    color: #b0b090;
+}
+
+.high_streak span:before {
+    content: 'High Streak: ';
+    white-space: nowrap;
+}
+
+.high_score {
+    position: absolute;
+    top: 502px;
+    left: 360px;
+    max-height: 24px;
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 6px;
+    color: #b0b090;
+}
+
+.high_score span:before {
+    content: 'High Score: ';
+    white-space: nowrap;
+}
+
+.high_round {
+    position: absolute;
+    top: 502px;
+    left: 720px;
+    max-height: 24px;
+    padding: 2px;
+    border: 1px solid;
+    border-radius: 6px;
+    color: #b0b090;
+}
+
+.high_round span:before {
+    content: 'High Round: ';
+    white-space: nowrap;
+}
+
+.high_box {
+    position: absolute;
+    top: 500px;
+    left: 0px;
+    height: 28px;
+    width: 825px;
+    background-color: #404060;
+    z-index: -1;
+}
