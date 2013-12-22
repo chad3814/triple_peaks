@@ -1,6 +1,6 @@
 'use strict';
 
-/*global Deck, Card, $, Image*/
+/*global Deck, Card, $, Image, localStorage*/
 
 // scoring
 // starting at 10, each card in the streak doubles the last point value
@@ -199,10 +199,66 @@ var Game = (function (win) {
         $('.card').click(click_handler.bind(this));
     };
 
+    var getHighStreak = function () {
+        var high = parseInt(localStorage.getItem('high_streak'), 10);
+        if (!isNaN(high)) {
+            return high;
+        }
+        return 0;
+    };
+
+    var updateHighStreak = function (current) {
+        var high = getHighStreak();
+        if (current > high) {
+            localStorage.setItem('high_streak', current.toString(10));
+            return current;
+        }
+        return high;
+    };
+
+    var getHighScore = function () {
+        var high = parseInt(localStorage.getItem('high_score'), 10);
+        if (!isNaN(high)) {
+            return high;
+        }
+        return 0;
+    };
+
+    var updateHighScore = function (current) {
+        var high = getHighScore();
+        if (current > high) {
+            localStorage.setItem('high_score', current.toString(10));
+            return current;
+        }
+        return high;
+    };
+
+    var getHighRound = function () {
+        var high = parseInt(localStorage.getItem('high_round'), 10);
+        if (!isNaN(high)) {
+            return high;
+        }
+        return 1;
+    };
+
+    var updateHighRound = function (current) {
+        var high = getHighRound();
+        if (current > high) {
+            localStorage.setItem('high_round', current.toString(10));
+            return current;
+        }
+        return high;
+    };
+
     Game.prototype.draw = function () {
         this.$streak.text(this.streak);
         this.$score.text(this.score.toLocaleString());
         this.$round.text(this.round);
+
+        this.$high_streak.text(updateHighStreak(this.streak));
+        this.$high_score.text(updateHighScore(this.score).toLocaleString());
+        this.$high_round.text(updateHighRound(this.round));
+
         this.positions.forEach(function (position) {
             if (!position.div) {
                 position.draw();
@@ -393,17 +449,27 @@ var Game = (function (win) {
             return;
         }
         this.started = true;
-        this.score = 0;
         this.next_score = 10;
         this.next_peak = 500;
-        this.round = 0;
         this.streak = 0;
+        this.score = 0;
+        this.round = 0;
+        this.high_streak = getHighStreak();
+        this.high_score = getHighScore();
+        this.high_round = getHighRound();
         this.$streak = $('<span>');
         this.$score = $('<span>');
         this.$round = $('<span>');
         $('.streak').remove();
         $('.score').remove();
         $('.round').remove();
+        this.$high_streak = $('<span>');
+        this.$high_score = $('<span>');
+        this.$high_round = $('<span>');
+        $('.high_streak').remove();
+        $('.high_score').remove();
+        $('.high_round').remove();
+        $('.high_box').remove();
         $('body')
             .append($('<div>')
                     .addClass('streak')
@@ -413,7 +479,18 @@ var Game = (function (win) {
                     .append(this.$score))
             .append($('<div>')
                     .addClass('round')
-                    .append(this.$round));
+                    .append(this.$round))
+            .append($('<div>')
+                    .addClass('high_box'))
+            .append($('<div>')
+                    .addClass('high_streak')
+                    .append(this.$high_streak))
+            .append($('<div>')
+                    .addClass('high_score')
+                    .append(this.$high_score))
+            .append($('<div>')
+                    .addClass('high_round')
+                    .append(this.$high_round));
 
         newRound.call(this);
         if (no_instructions) {
