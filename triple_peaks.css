@@ -1,15 +1,17 @@
 body {
     background: no-repeat url(Three_Sisters.jpg);
+    padding: 0;
+    margin: 0;
 }
 
 .streak {
-    position: absolute;
-    top: 0px;
-    left: 0px;
+    float: left;
     max-height: 24px;
     padding: 2px;
-    border: 1px solid black;
+    margin-left: 2px;
+    border: 1px solid;
     border-radius: 6px;
+    color: #b0b090;
 }
 
 .streak span:before {
@@ -17,13 +19,12 @@ body {
 }
 
 .score {
-    position: absolute;
-    top: 0px;
-    left: 360px;
+    display: inline-block;
     max-height: 24px;
     padding: 2px;
-    border: 1px solid black;
+    border: 1px solid;
     border-radius: 6px;
+    color: #b0b090;
 }
 
 .score span:before {
@@ -31,13 +32,13 @@ body {
 }
 
 .round {
-    position: absolute;
-    top: 0px;
-    left: 760px;
+    float: right;
     max-height: 24px;
     padding: 2px;
-    border: 1px solid black;
+    margin-right: 2px;
+    border: 1px solid;
     border-radius: 6px;
+    color: #b0b090;
 }
 
 .round span:before {
@@ -106,9 +107,7 @@ body {
 }
 
 .high_streak {
-    position: absolute;
-    top: 502px;
-    left: 0px;
+    float: left;
     max-height: 24px;
     padding: 2px;
     border: 1px solid;
@@ -122,9 +121,7 @@ body {
 }
 
 .high_score {
-    position: absolute;
-    top: 502px;
-    left: 360px;
+    display: inline-block;
     max-height: 24px;
     padding: 2px;
     border: 1px solid;
@@ -138,11 +135,10 @@ body {
 }
 
 .high_round {
-    position: absolute;
-    top: 502px;
-    left: 720px;
+    float: right;
     max-height: 24px;
     padding: 2px;
+    margin-right: 2px;
     border: 1px solid;
     border-radius: 6px;
     color: #b0b090;
@@ -153,12 +149,8 @@ body {
     white-space: nowrap;
 }
 
-.high_box {
-    position: absolute;
-    top: 500px;
-    left: 0px;
-    height: 28px;
-    width: 825px;
+.score_box {
+    text-align: center;
     background-color: #404060;
-    z-index: -1;
+    padding: 2px;
 }
