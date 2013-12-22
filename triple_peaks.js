@@ -91,95 +91,95 @@ var Game = (function (win) {
             this.positions.push(this.deck.drawOne());
         }
         // first row
-        this.positions[0].setDrawLocation(120, 32);
+        this.positions[0].setDrawLocation(114, 32);
         this.positions[0].bonus = true;
-        this.positions[1].setDrawLocation(360, 32);
+        this.positions[1].setDrawLocation(342, 32);
         this.positions[1].bonus = true;
-        this.positions[2].setDrawLocation(600, 32);
+        this.positions[2].setDrawLocation(570, 32);
         this.positions[2].bonus = true;
 
         // second row
-        x = 80;
-        this.positions[3].setDrawLocation(x, 96);
+        x = 76;
+        this.positions[3].setDrawLocation(x, 83);
         this.positions[3].cover(this.positions[0]);
-        this.positions[4].setDrawLocation(x + 80, 96);
+        this.positions[4].setDrawLocation(x + 76, 83);
         this.positions[4].cover(this.positions[0]);
 
-        x = 320;
-        this.positions[5].setDrawLocation(x, 96);
+        x = 304;
+        this.positions[5].setDrawLocation(x, 83);
         this.positions[5].cover(this.positions[1]);
-        this.positions[6].setDrawLocation(x + 80, 96);
+        this.positions[6].setDrawLocation(x + 76, 83);
         this.positions[6].cover(this.positions[1]);
 
-        x = 560;
-        this.positions[7].setDrawLocation(x, 96);
+        x = 532;
+        this.positions[7].setDrawLocation(x, 83);
         this.positions[7].cover(this.positions[2]);
-        this.positions[8].setDrawLocation(x + 80, 96);
+        this.positions[8].setDrawLocation(x + 76, 83);
         this.positions[8].cover(this.positions[2]);
 
         // third row
-        x = 40;
-        this.positions[9].setDrawLocation(x, 160);
+        x = 38;
+        this.positions[9].setDrawLocation(x, 134);
         this.positions[9].cover(this.positions[3]);
-        this.positions[10].setDrawLocation(x + 80, 160);
+        this.positions[10].setDrawLocation(x + 76, 134);
         this.positions[10].cover(this.positions[3]);
         this.positions[10].cover(this.positions[4]);
-        this.positions[11].setDrawLocation(x + 160, 160);
+        this.positions[11].setDrawLocation(x + 152, 134);
         this.positions[11].cover(this.positions[4]);
 
-        this.positions[12].setDrawLocation(x + 240, 160);
+        this.positions[12].setDrawLocation(x + 228, 134);
         this.positions[12].cover(this.positions[5]);
-        this.positions[13].setDrawLocation(x + 320, 160);
+        this.positions[13].setDrawLocation(x + 304, 134);
         this.positions[13].cover(this.positions[5]);
         this.positions[13].cover(this.positions[6]);
-        this.positions[14].setDrawLocation(x + 400, 160);
+        this.positions[14].setDrawLocation(x + 380, 134);
         this.positions[14].cover(this.positions[6]);
 
-        this.positions[15].setDrawLocation(x + 480, 160);
+        this.positions[15].setDrawLocation(x + 456, 134);
         this.positions[15].cover(this.positions[7]);
-        this.positions[16].setDrawLocation(x + 560, 160);
+        this.positions[16].setDrawLocation(x + 532, 134);
         this.positions[16].cover(this.positions[7]);
         this.positions[16].cover(this.positions[8]);
-        this.positions[17].setDrawLocation(x + 640, 160);
+        this.positions[17].setDrawLocation(x + 608, 134);
         this.positions[17].cover(this.positions[8]);
 
         // fourth row
-        this.positions[18].setDrawLocation(0, 224);
+        this.positions[18].setDrawLocation(1, 185);
         this.positions[18].cover(this.positions[9]);
 
-        this.positions[19].setDrawLocation(80, 224);
+        this.positions[19].setDrawLocation(76, 185);
         this.positions[19].cover(this.positions[9]);
         this.positions[19].cover(this.positions[10]);
 
-        this.positions[20].setDrawLocation(160, 224);
+        this.positions[20].setDrawLocation(152, 185);
         this.positions[20].cover(this.positions[10]);
         this.positions[20].cover(this.positions[11]);
 
-        this.positions[21].setDrawLocation(240, 224);
+        this.positions[21].setDrawLocation(228, 185);
         this.positions[21].cover(this.positions[11]);
         this.positions[21].cover(this.positions[12]);
 
-        this.positions[22].setDrawLocation(320, 224);
+        this.positions[22].setDrawLocation(304, 185);
         this.positions[22].cover(this.positions[12]);
         this.positions[22].cover(this.positions[13]);
 
-        this.positions[23].setDrawLocation(400, 224);
+        this.positions[23].setDrawLocation(380, 185);
         this.positions[23].cover(this.positions[13]);
         this.positions[23].cover(this.positions[14]);
 
-        this.positions[24].setDrawLocation(480, 224);
+        this.positions[24].setDrawLocation(456, 185);
         this.positions[24].cover(this.positions[14]);
         this.positions[24].cover(this.positions[15]);
 
-        this.positions[25].setDrawLocation(560, 224);
+        this.positions[25].setDrawLocation(532, 185);
         this.positions[25].cover(this.positions[15]);
         this.positions[25].cover(this.positions[16]);
 
-        this.positions[26].setDrawLocation(640, 224);
+        this.positions[26].setDrawLocation(608, 185);
         this.positions[26].cover(this.positions[16]);
         this.positions[26].cover(this.positions[17]);
 
-        this.positions[27].setDrawLocation(720, 224);
+        this.positions[27].setDrawLocation(684, 185);
         this.positions[27].cover(this.positions[17]);
 
         this.up_card = this.deck.drawOne();
@@ -486,7 +486,7 @@ var Game = (function (win) {
                     .addClass('score_box')
                     .css('position', 'absolute')
                     .css('top', '500px')
-                    .css('width', '821px')
+                    .css('width', '756px')
                     .append($('<div>')
                             .addClass('high_streak')
                             .append(this.$high_streak))
