@@ -485,7 +485,7 @@ var Game = (function (win) {
             .append($('<div>')
                     .addClass('score_box')
                     .css('position', 'absolute')
-                    .css('top', '500px')
+                    .css('top', '470px')
                     .append($('<div>')
                             .addClass('high_streak')
                             .append(this.$high_streak))
