@@ -269,7 +269,7 @@ var Game = (function (win) {
 
     Game.prototype.draw = function () {
         this.$streak.text(this.streak);
-        this.$score.text(formatNumber(this.score.toLocaleString));
+        this.$score.text(formatNumber(this.score));
         this.$round.text(this.round);
 
         this.$high_streak.text(updateHighStreak(this.streak));
