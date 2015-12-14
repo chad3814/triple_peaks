@@ -11,6 +11,23 @@
 // at the end of a round get a bonus of 1000 for clearing
 // and a bonus of 100 per card still in the deck (counting up card)
 
+var formatNumber = function (num) {
+    var str = num.toString(10).split('').reverse();
+    var ret = '';
+    var i = 0;
+    str.forEach(function (n) {
+        ret = n + ret;
+        i += 1;
+        if ((i % 3) === 0) {
+            ret = ',' + ret;
+        }
+    });
+    if ((i % 3) === 0) {
+        ret = ret.substr(1);
+    }
+    return ret;
+};
+
 var distance = function (pos1, pos2) {
     var x2 = (pos1.x - pos2.x) * (pos1.x - pos2.x);
     var y2 = (pos1.y - pos2.y) * (pos1.y - pos2.y);
@@ -252,11 +269,11 @@ var Game = (function (win) {
 
     Game.prototype.draw = function () {
         this.$streak.text(this.streak);
-        this.$score.text(this.score.toLocaleString());
+        this.$score.text(formatNumber(this.score.toLocaleString));
         this.$round.text(this.round);
 
         this.$high_streak.text(updateHighStreak(this.streak));
-        this.$high_score.text(updateHighScore(this.score).toLocaleString());
+        this.$high_score.text(formatNumber(updateHighScore(this.score)));
         this.$high_round.text(updateHighRound(this.round));
 
         this.positions.forEach(function (position) {
@@ -306,7 +323,7 @@ var Game = (function (win) {
     Game.prototype.showScore = function (points, position) {
         var $score_bubble = $('<div>')
             .addClass('score_bubble')
-            .text(points.toLocaleString())
+            .text(formatNumber(points))
             .css({
                 top: (position.y + 32) + 'px',
                 left: (position.x + 8) + 'px'
@@ -329,7 +346,7 @@ var Game = (function (win) {
     Game.prototype.showBonusScore = function (points, position) {
         var $score_bubble = $('<div>')
             .addClass('score_bubble bonus_bubble')
-            .text(points.toLocaleString())
+            .text(formatNumber(points))
             .css({
                 top: (position.y + 80) + 'px',
                 left: (position.x + 8) + 'px'
