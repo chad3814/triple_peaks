@@ -460,16 +460,10 @@ var Game = (function (win) {
         this.$streak = $('<span>');
         this.$score = $('<span>');
         this.$round = $('<span>');
-        $('.streak').remove();
-        $('.score').remove();
-        $('.round').remove();
         this.$high_streak = $('<span>');
         this.$high_score = $('<span>');
         this.$high_round = $('<span>');
-        $('.high_streak').remove();
-        $('.high_score').remove();
-        $('.high_round').remove();
-        $('.high_box').remove();
+        $('.score_box').remove();
         $('body')
             .append($('<div>')
                     .addClass('score_box')
